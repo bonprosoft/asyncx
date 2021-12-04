@@ -1,0 +1,13 @@
+[tool.pysen]
+version = "0.10"
+
+[tool.pysen.lint]
+enable_black = true
+enable_flake8 = true
+enable_isort = true
+enable_mypy = true
+mypy_preset = "very_strict"
+py_version = "py37"
+isort_known_first_party = ["asyncx"]
+[[tool.pysen.lint.mypy_targets]]
+  paths = ["asyncx/", "tests/", "setup.py"]
