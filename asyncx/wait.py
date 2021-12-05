@@ -3,6 +3,21 @@ from typing import Any, Awaitable, Sequence
 
 
 async def wait_any(*awaitables: Awaitable[Any]) -> Awaitable[Any]:
+    """Creates a coroutine that waits for any of given awaitables to be completed.
+
+    Example:
+        >>> coro1 = asyncio.create_task(asyncio.sleep(1))
+        >>> coro2 = asyncio.create_task(asyncio.sleep(2))
+        >>> await asyncx.wait_any(coro1, coro2) is coro1
+        True
+
+    Args:
+        awaitables: Awaitable objects to wait.
+
+    Returns:
+        A :class:`Coroutine` object that returns first finished :class:`asyncio.Future` object.
+    """
+
     if len(awaitables) == 0:
         raise ValueError("awaitables cannot be empty")
     completed, pending = await asyncio.wait(
@@ -14,6 +29,23 @@ async def wait_any(*awaitables: Awaitable[Any]) -> Awaitable[Any]:
 
 
 async def wait_all(*awaitables: Awaitable[Any]) -> Sequence[Awaitable[Any]]:
+    """Creates a coroutine that waits for all of given awaitables to be completed.
+
+    Example:
+        >>> coro1 = asyncio.create_task(asyncio.sleep(1))
+        >>> coro2 = asyncio.create_task(asyncio.sleep(2))
+        >>> ret = await asyncx.wait_all(coro1, coro2)
+        >>> set(ret) == {coro1, coro2}
+        True
+
+    Args:
+        awaitables: Awaitable objects to wait.
+
+    Returns:
+        A :class:`Coroutine` object that returns a list of completed
+        :class:`asyncio.Future` object.
+    """
+
     if len(awaitables) == 0:
         raise ValueError("awaitables cannot be empty")
     completed, pending = await asyncio.wait(

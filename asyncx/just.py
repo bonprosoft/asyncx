@@ -1,10 +1,20 @@
-from typing import Any, Coroutine, TypeVar
+from typing import TypeVar
 
 TReturn = TypeVar("TReturn")
 
 
-def just(ret: TReturn) -> Coroutine[Any, Any, TReturn]:
-    async def coro() -> TReturn:
-        return ret
+async def just(ret: TReturn) -> TReturn:
+    """Creates a coroutine that returns a specified result.
 
-    return coro()
+    Example:
+        >>> await asyncx.just(42)
+        42
+
+    Args:
+        ret: The result to return from a coroutine
+
+    Returns:
+        A :class:`Coroutine[Any, Any, T]` object that returns ``ret``.
+    """
+
+    return ret

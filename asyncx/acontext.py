@@ -22,9 +22,17 @@ def acontext(future: TFuture) -> AsyncContextManager[TFuture]:
 
 @contextlib.asynccontextmanager
 async def acontext(
-    coro_or_future: Awaitable[TReturn],
+    awaitable: Awaitable[TReturn],
 ) -> AsyncIterator[asyncio.Future[TReturn]]:
-    future: asyncio.Future[TReturn] = asyncio.ensure_future(coro_or_future)
+    """Creates an async context manager that cancels a given awaitable in ``__aexit__``.
+
+    Arg:
+        awaitable: A target awaitable object
+
+    Returns:
+        An async context manager that creates a future and cancels it of a given awaitable.
+    """
+    future: asyncio.Future[TReturn] = asyncio.ensure_future(awaitable)
     try:
         yield future
     finally:
