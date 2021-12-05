@@ -41,3 +41,19 @@ async def test_shield() -> None:
     join.set()
     await asyncio.sleep(0.01)
     assert ret == [1, 2, 3]
+
+    # Check double-cancel
+    task = asyncio.create_task(fake(4, "bar"))
+    await asyncio.sleep(0.01)
+    task.cancel()
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+
+    assert task.done()
+    assert task.cancelled()
+
+    # assert that fake() is running as it is shielded
+    join.set()
+    await asyncio.sleep(0.01)
+    assert ret == [1, 2, 3, 4]
