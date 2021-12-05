@@ -6,3 +6,6 @@
 .tox
 .venv
 __pycache__/
+
+docs/build/
+docs/source/generated/
