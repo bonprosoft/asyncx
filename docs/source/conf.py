@@ -13,6 +13,8 @@
 import os
 import sys
 
+import pkg_resources
+
 sys.path.insert(0, os.path.abspath("../"))
 
 
@@ -23,7 +25,8 @@ copyright = "2021, Yuki Igarashi"
 author = "Yuki Igarashi"
 
 # The full version, including alpha/beta/rc tags
-release = "0.0.1"
+__version__ = pkg_resources.get_distribution(project).version
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------

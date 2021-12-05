@@ -3,10 +3,11 @@ import pathlib
 from setuptools import find_packages, setup
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent
+exec((BASE_DIR / "asyncx/_version.py").read_text())
 
 setup(
     name="asyncx",
-    version="0.0.1",
+    version=__version__,  # type: ignore[name-defined]  # NOQA: F821
     packages=find_packages(),
     description="Utility library for asyncio",
     long_description=(BASE_DIR / "README.md").read_text(),

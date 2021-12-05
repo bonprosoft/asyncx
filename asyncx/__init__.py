@@ -1,3 +1,4 @@
+from ._version import __version__  # NOQA
 from .context import acontext  # NOQA
 from .coroutine import just, wait_all, wait_any  # NOQA
 from .shield import shield  # NOQA
