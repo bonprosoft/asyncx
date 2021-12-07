@@ -2,11 +2,10 @@ import asyncio
 import functools
 from typing import Any, Awaitable, Callable, TypeVar, cast
 
-TReturn = TypeVar("TReturn")
-AsyncCallable = Callable[..., Awaitable[TReturn]]
+TAsyncCallable = TypeVar("TAsyncCallable", bound=Callable[..., Awaitable[Any]])
 
 
-def shield(func: AsyncCallable[TReturn]) -> AsyncCallable[TReturn]:
+def shield(func: TAsyncCallable) -> TAsyncCallable:
     """A decorator for an async function to protect it from being cancelled.
 
     Example:
@@ -27,7 +26,7 @@ def shield(func: AsyncCallable[TReturn]) -> AsyncCallable[TReturn]:
     """
 
     @functools.wraps(func)
-    async def wrapper(*args: Any, **kwargs: Any) -> TReturn:
+    async def wrapper(*args: Any, **kwargs: Any) -> Any:
         return await asyncio.shield(func(*args, **kwargs))
 
-    return cast(AsyncCallable[TReturn], wrapper)
+    return cast(TAsyncCallable, wrapper)
