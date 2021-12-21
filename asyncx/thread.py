@@ -160,7 +160,7 @@ class EventLoopThread(threading.Thread):
     ) -> concurrent.futures.Future[TReturn]:
         """Submit a coroutine in the event loop.
 
-        Arg:
+        Args:
             coro: A `Coroutine` object to run.
 
         Returns:
@@ -178,7 +178,7 @@ class EventLoopThread(threading.Thread):
     ) -> asyncio.Future[TReturn]:
         """Submit a coroutine in a new thread and waits for its completion in a given ``loop``.
 
-        Arg:
+        Args:
             coro: A `Coroutine` object to run.
             loop: An event loop to wait for the completion of ``coro``.
 
@@ -208,7 +208,7 @@ def run_coroutine_in_thread(
         >>> main == sub
         False
 
-    Arg:
+    Args:
         coro: A coroutine to run in a new thread.
         loop: An event loop to wait for the completion of ``coro``.
 

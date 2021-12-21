@@ -26,7 +26,7 @@ async def acontext(
 ) -> AsyncIterator[asyncio.Future[TReturn]]:
     """Creates an async context manager that cancels a given awaitable in ``__aexit__``.
 
-    Arg:
+    Args:
         awaitable: A target awaitable object
 
     Returns:

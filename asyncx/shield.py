@@ -21,7 +21,7 @@ def shield(func: TAsyncCallable) -> TAsyncCallable:
         >>> await asyncio.sleep(1)
         End foo
 
-    Arg:
+    Args:
         func: An async function to be shielded.
     """
 
