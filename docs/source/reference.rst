@@ -49,3 +49,13 @@ Thread Handling
 
    asyncx.EventLoopThread
    asyncx.run_coroutine_in_thread
+
+
+Event Loop
+----------------------
+
+.. autosummary::
+   :nosignatures:
+   :toctree: generated/
+
+   asyncx.dispatch
