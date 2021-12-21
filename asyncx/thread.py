@@ -38,7 +38,7 @@ class EventLoopThread(threading.Thread):
         daemon: bool = False,
         start: bool = False,
     ) -> None:
-        """Create a new event loop thread.
+        """Creates a new event loop thread.
 
         Args:
             loop_policy:
