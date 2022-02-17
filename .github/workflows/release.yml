@@ -39,6 +39,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: packages
+        path: dist/
     - name: Publish a Python distribution to test.pypi.org
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
@@ -60,6 +61,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: packages
+        path: dist/
     - name: Publish a Python distribution to pypi.org
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
