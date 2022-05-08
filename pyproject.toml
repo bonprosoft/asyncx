@@ -9,5 +9,12 @@ enable_mypy = true
 mypy_preset = "very_strict"
 py_version = "py37"
 isort_known_first_party = ["asyncx"]
+
+[tool.pysen.lint.source]
+  excludes = [
+    ".tox",
+    ".venv",
+  ]
+
 [[tool.pysen.lint.mypy_targets]]
   paths = ["asyncx/", "tests/", "setup.py"]
