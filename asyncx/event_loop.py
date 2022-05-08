@@ -77,7 +77,7 @@ async def dispatch_coroutine(
         target_loop:
             An event loop to execute the ``coro``.
         caller_loop:
-            An event loop to wait for dispatched coroutine to complete.
+            An event loop to wait for the dispatched coroutine to complete.
     """
     if caller_loop is None:
         caller_loop = asyncio.get_running_loop()
