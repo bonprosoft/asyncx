@@ -99,7 +99,7 @@ class EventLoopThread(threading.Thread):
         if loop is None:
             raise RuntimeError("Thread is not running")
 
-        return self.loop
+        return loop
 
     @property
     def loop(self) -> asyncio.AbstractEventLoop:
