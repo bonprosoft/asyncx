@@ -8,7 +8,7 @@ enable_isort = true
 enable_mypy = true
 mypy_preset = "very_strict"
 py_version = "py37"
-isort_known_first_party = ["asyncx", "asyncx_ros"]
+isort_known_first_party = ["asyncx", "asyncx_ros2"]
 
 [tool.pysen.lint.source]
   excludes = [
