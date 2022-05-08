@@ -190,4 +190,5 @@ def ensure_aio_future(
     if isinstance(coro_or_future, ROSFuture):
         return ros_to_aio_future(coro_or_future, loop=loop)
     else:
-        return asyncio.ensure_future(coro_or_future, loop=loop)
+        future: asyncio.Future[Any] = asyncio.ensure_future(coro_or_future, loop=loop)
+        return future
