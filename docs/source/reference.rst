@@ -59,3 +59,4 @@ Event Loop
    :toctree: generated/
 
    asyncx.dispatch
+   asyncx.dispatch_coroutine
