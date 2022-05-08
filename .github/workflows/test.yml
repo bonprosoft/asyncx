@@ -18,5 +18,7 @@ jobs:
         pip install -U pip
         pip install tox==3.25.0
     - name: Run tox
+      env:
+        TOX_PARALLEL_NO_SPINNER: 1
       run: |
         tox --parallel
