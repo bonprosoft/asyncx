@@ -1,12 +1,8 @@
 import asyncio
 import functools
-from typing import Any, Awaitable, Callable, TypeVar, Union, cast
+from typing import Any, Callable, cast
 
-EventLoopSelector = Union[
-    asyncio.AbstractEventLoop,
-    Callable[[], asyncio.AbstractEventLoop],
-]
-TAsyncCallable = TypeVar("TAsyncCallable", bound=Callable[..., Awaitable[Any]])
+from ._types import EventLoopSelector, TAsyncCallable
 
 
 def dispatch(
@@ -44,20 +40,10 @@ def dispatch(
             else:
                 target_loop = loop_selector
 
-            coro = func(*args, **kwargs)
-
             caller_loop = asyncio.get_running_loop()
-            if caller_loop == target_loop:
-                return await coro
-            else:
-                f = asyncio.run_coroutine_threadsafe(coro, target_loop)
-                try:
-                    return await asyncio.wrap_future(f, loop=caller_loop)
-                finally:
-                    # If the caller task was cancelled, propagate its cancellation
-                    # to inner future
-                    if f.running():
-                        f.cancel()
+            coro = func(*args, **kwargs)
+            f = asyncio.run_coroutine_threadsafe(coro, target_loop)
+            return await asyncio.wrap_future(f, loop=caller_loop)
 
         return cast(TAsyncCallable, wrapper)
 
