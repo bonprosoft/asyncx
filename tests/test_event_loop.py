@@ -67,16 +67,17 @@ async def test_dispatch_coroutine() -> None:
         )
         assert base == dispatched
 
-        # coro1: Run `func()` on `base_loop` and wait for the result on `thread.loop`.
-        # coro2: Run `coro1` on `thread.loop` and wait for the result on `base_loop`.
-        coro1 = asyncx.dispatch_coroutine(
-            func(),
-            target_loop=base_loop,
-            caller_loop=thread.loop,
-        )
-        coro2 = asyncx.dispatch_coroutine(
-            coro1,
-            target_loop=thread.loop,
-            caller_loop=base_loop,
-        )
-        assert base == await coro2
+        async def coro1() -> int:
+            return await asyncx.dispatch_coroutine(
+                func(),
+                target_loop=base_loop,
+            )
+
+        async def coro2() -> int:
+            return await asyncx.dispatch_coroutine(
+                coro1(),
+                target_loop=thread.loop,
+            )
+
+        assert base == await coro1()
+        assert base == await coro2()

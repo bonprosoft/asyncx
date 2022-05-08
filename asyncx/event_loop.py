@@ -1,6 +1,6 @@
 import asyncio
 import functools
-from typing import Any, Callable, Coroutine, Optional, cast
+from typing import Any, Callable, Coroutine, cast
 
 from ._types import EventLoopSelector, TAsyncCallable, TReturn
 
@@ -40,12 +40,10 @@ def dispatch(
             else:
                 target_loop = loop_selector
 
-            caller_loop = asyncio.get_running_loop()
             coro = func(*args, **kwargs)
             return await dispatch_coroutine(
                 coro,
                 target_loop=target_loop,
-                caller_loop=caller_loop,
             )
 
         return cast(TAsyncCallable, wrapper)
@@ -56,7 +54,6 @@ def dispatch(
 async def dispatch_coroutine(
     coro: Coroutine[Any, Any, TReturn],
     target_loop: asyncio.AbstractEventLoop,
-    caller_loop: Optional[asyncio.AbstractEventLoop] = None,
 ) -> TReturn:
     """Execute the specified coroutine on the specified event loop.
 
@@ -76,12 +73,8 @@ async def dispatch_coroutine(
             A coroutine to be dispatched.
         target_loop:
             An event loop to execute the ``coro``.
-        caller_loop:
-            An event loop to wait for the dispatched coroutine to complete.
     """
-    if caller_loop is None:
-        caller_loop = asyncio.get_running_loop()
-
+    caller_loop = asyncio.get_running_loop()
     if target_loop == caller_loop:
         return await coro
 
