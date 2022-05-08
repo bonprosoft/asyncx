@@ -68,3 +68,4 @@ autodoc_default_options = {
     "members": True,
     "exclude-members": "with_traceback",
 }
+autodoc_mock_imports = ["rclpy"]

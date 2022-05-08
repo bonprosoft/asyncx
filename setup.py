@@ -26,7 +26,10 @@ setup(
         "Operating System :: MacOS",
         "Operating System :: Unix",
     ],
-    package_data={"asyncx": ["py.typed"]},
+    package_data={
+        "asyncx": ["py.typed"],
+        "asyncx_ros2": ["py.typed"],
+    },
     extras_require={
         "docs": [
             "Sphinx>=4.3.0,<5.0.0",

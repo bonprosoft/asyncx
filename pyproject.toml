@@ -8,7 +8,7 @@ enable_isort = true
 enable_mypy = true
 mypy_preset = "very_strict"
 py_version = "py37"
-isort_known_first_party = ["asyncx"]
+isort_known_first_party = ["asyncx", "asyncx_ros"]
 
 [tool.pysen.lint.source]
   excludes = [
@@ -17,4 +17,9 @@ isort_known_first_party = ["asyncx"]
   ]
 
 [[tool.pysen.lint.mypy_targets]]
-  paths = ["asyncx/", "tests/", "setup.py"]
+  paths = [
+    "asyncx/",
+    "asyncx_ros2/",
+    "setup.py",
+    "tests/",
+  ]
