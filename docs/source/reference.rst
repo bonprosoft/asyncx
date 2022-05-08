@@ -60,3 +60,19 @@ Event Loop
 
    asyncx.dispatch
    asyncx.dispatch_coroutine
+
+
+ROS2 Support (rclpy)
+--------------------
+
+.. module:: asyncx_ros2
+.. autosummary::
+   :nosignatures:
+   :toctree: generated/
+
+   asyncx_ros2.aio_to_ros_future
+   asyncx_ros2.concurrent_to_ros_future
+   asyncx_ros2.ros_to_aio_future
+   asyncx_ros2.ensure_aio_future
+   asyncx_ros2.ensure_ros_future
+   asyncx_ros2.wrap_as_ros_coroutine
