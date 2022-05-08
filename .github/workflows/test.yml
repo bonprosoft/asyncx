@@ -1,0 +1,24 @@
+name: Test
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+jobs:
+  pytest:
+    name: Python tests
+    runs-on: ubuntu-20.04
+    timeout-minutes: 15
+    container:
+      image: python:3.8.8-alpine3.13
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        pip install -U pip
+        pip install tox==3.25.0
+    - name: Run tox
+      env:
+        TOX_PARALLEL_NO_SPINNER: 1
+      run: |
+        tox --parallel
