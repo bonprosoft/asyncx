@@ -46,7 +46,7 @@ def dispatch(
 
             coro = func(*args, **kwargs)
 
-            caller_loop = asyncio.get_event_loop()
+            caller_loop = asyncio.get_running_loop()
             if caller_loop == target_loop:
                 return await coro
             else:
