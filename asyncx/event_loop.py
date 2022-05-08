@@ -1,8 +1,8 @@
 import asyncio
 import functools
-from typing import Any, Callable, cast
+from typing import Any, Callable, Coroutine, Optional, cast
 
-from ._types import EventLoopSelector, TAsyncCallable
+from ._types import EventLoopSelector, TAsyncCallable, TReturn
 
 
 def dispatch(
@@ -33,7 +33,7 @@ def dispatch(
 
     def deco(func: TAsyncCallable) -> TAsyncCallable:
         @functools.wraps(func)
-        async def wrapper(*args: Any, **kwargs: Any) -> Any:
+        async def wrapper(*args: Any, **kwargs: Any) -> TReturn:
             target_loop: asyncio.AbstractEventLoop
             if callable(loop_selector):
                 target_loop = loop_selector()
@@ -42,9 +42,48 @@ def dispatch(
 
             caller_loop = asyncio.get_running_loop()
             coro = func(*args, **kwargs)
-            f = asyncio.run_coroutine_threadsafe(coro, target_loop)
-            return await asyncio.wrap_future(f, loop=caller_loop)
+            return await dispatch_coroutine(
+                coro,
+                target_loop=target_loop,
+                caller_loop=caller_loop,
+            )
 
         return cast(TAsyncCallable, wrapper)
 
     return deco
+
+
+async def dispatch_coroutine(
+    coro: Coroutine[Any, Any, TReturn],
+    target_loop: asyncio.AbstractEventLoop,
+    caller_loop: Optional[asyncio.AbstractEventLoop] = None,
+) -> TReturn:
+    """Execute the specified coroutine on the specified event loop.
+
+    Example:
+        >>> async def foo() -> None:
+        ...     return threading.get_ident()
+        ...
+        >>> current, dispatched = await asyncio.gather(
+        ...     foo(),
+        ...     asyncx.dispatch_coroutine(foo(), other_loop),
+        ... )
+        >>> current != dispatched
+        True
+
+    Args:
+        coro:
+            A coroutine to be dispatched.
+        target_loop:
+            An event loop to execute the ``coro``.
+        caller_loop:
+            An event loop to wait for dispatched coroutine to complete.
+    """
+    if caller_loop is None:
+        caller_loop = asyncio.get_running_loop()
+
+    if target_loop == caller_loop:
+        return await coro
+
+    f = asyncio.run_coroutine_threadsafe(coro, target_loop)
+    return await asyncio.wrap_future(f, loop=caller_loop)
