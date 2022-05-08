@@ -86,17 +86,28 @@ class EventLoopThread(threading.Thread):
         finally:
             self._loop = None
 
-    @property
-    def loop(self) -> asyncio.AbstractEventLoop:
+    def get_loop(self) -> asyncio.AbstractEventLoop:
         """Get an event loop of the running thread.
 
-        The thread should be running. The method will raise :class:`RuntimeError`
+        The thread must be running. The method will raise :class:`RuntimeError`
         if the thread is not running.
+
+        See also:
+            Use :attr:`EventLoopThread.loop` if you need an accessor to the loop.
         """
         loop = self._loop
         if loop is None:
             raise RuntimeError("Thread is not running")
+
         return loop
+
+    @property
+    def loop(self) -> asyncio.AbstractEventLoop:
+        """Get an event loop of the running thread.
+
+        The property just returns the return value of :func:`EventLoopThread.get_loop`.
+        """
+        return self.get_loop()
 
     def start(self) -> None:
         """Start the thread and wait for a new event loop to be ready.

@@ -28,6 +28,9 @@ async def test_event_loop_thread(event_loop_thread: asyncx.EventLoopThread) -> N
     with pytest.raises(RuntimeError):
         event_loop_thread.loop
 
+    with pytest.raises(RuntimeError):
+        event_loop_thread.get_loop()
+
     coro = _get_ident()
     with pytest.raises(RuntimeError):
         event_loop_thread.run_coroutine(coro)
@@ -35,6 +38,7 @@ async def test_event_loop_thread(event_loop_thread: asyncx.EventLoopThread) -> N
 
     event_loop_thread.start()
     assert event_loop_thread.is_alive()
+    assert event_loop_thread.get_loop() is not None
     assert event_loop_thread.loop is not None
     main, sub = await asyncio.gather(
         _get_ident(),
@@ -50,6 +54,9 @@ async def test_event_loop_thread(event_loop_thread: asyncx.EventLoopThread) -> N
 
     with pytest.raises(RuntimeError):
         event_loop_thread.loop
+
+    with pytest.raises(RuntimeError):
+        event_loop_thread.get_loop()
 
     coro = _get_ident()
     with pytest.raises(RuntimeError):
